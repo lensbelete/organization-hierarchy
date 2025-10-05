@@ -1,0 +1,76 @@
+{
+  "positions": [
+    {
+      "id": "a121",
+      "name": "CEO",
+      "description": "Chief Executive Officer",
+      "parentId": null
+    },
+    {
+      "id": "c770",
+      "name": "CTO",
+      "description": "Chief Technology Officer",
+      "parentId": "a121"
+    },
+    {
+      "id": "fcc7",
+      "name": "Project Manager",
+      "description": "PM",
+      "parentId": "c770"
+    },
+    {
+      "id": "eb6c",
+      "name": "Product Owner",
+      "description": "PO",
+      "parentId": "fcc7"
+    },
+    {
+      "id": "b297",
+      "name": "Tech Lead",
+      "description": "tech lead",
+      "parentId": "eb6c"
+    },
+    {
+      "id": "8182",
+      "name": "Frontend Developer",
+      "description": "Frontend",
+      "parentId": "b297"
+    },
+    {
+      "id": "fe14",
+      "name": "Backend Developer",
+      "description": "Backend",
+      "parentId": "8182"
+    },
+    {
+      "id": "8523",
+      "name": "DevOps Engineer",
+      "description": "DevOps",
+      "parentId": "fe14"
+    },
+    {
+      "id": "d730",
+      "name": "QA Engineer",
+      "description": "QA",
+      "parentId": "8523"
+    },
+    {
+      "id": "8c54",
+      "name": "Chief Accountant",
+      "description": "Accountant",
+      "parentId": "7fac"
+    },
+    {
+      "id": "7fac",
+      "name": "CFO",
+      "description": "chief finance officer",
+      "parentId": "d730"
+    },
+    {
+      "id": "99d7",
+      "name": "new position",
+      "description": "description ",
+      "parentId": "b297"
+    }
+  ]
+}
