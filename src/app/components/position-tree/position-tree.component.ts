@@ -24,32 +24,32 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
               <h1 class="text-2xl font-bold text-gray-800">Employee Hierarchy</h1>
               <p class="text-gray-600 mt-1">Manage your organization's position structure</p>
             </div>
-           <button nz-button nzType="primary" (click)="openCreateDrawer()" ngSkipHydration>
+            <button nz-button nzType="primary" (click)="openCreateDrawer()" ngSkipHydration>
               Create Position
             </button>
           </div>
         </div>
 
-<div class="h-[73vh] bg-white p-6 border border-gray-200 overflow-auto">
-  @if (treeData$ | async; as treeData) {
-    @if (treeData && treeData.length > 0) {
-      <nz-tree
-      ngSkipHydration
-        nzBlockNode
-        [nzData]="treeData"
-        (nzClick)="onNodeClick($event)">
-      </nz-tree>
-    } @else {
-      <div class="text-center mt-32">
-        <h3 class="text-xl font-semibold text-gray-500 mb-2">No positions yet</h3>
-        <p class="text-gray-500 mb-6">Start building your organization's hierarchy</p>
-        <button nz-button nzType="primary" (click)="openCreateDrawer()">
-          Create Position
-        </button>
-      </div>
-    }
-  } 
-</div>
+        <div class="h-[73vh] bg-white p-6 border border-gray-200 overflow-auto">
+          @if (treeData$ | async; as treeData) {
+            @if (treeData && treeData.length > 0) {
+              <nz-tree
+              ngSkipHydration
+                nzBlockNode
+                [nzData]="treeData"
+                (nzClick)="onNodeClick($event)">
+              </nz-tree>
+            } @else {
+              <div class="text-center mt-32">
+                <h3 class="text-xl font-semibold text-gray-500 mb-2">No positions yet</h3>
+                <p class="text-gray-500 mb-6">Start building your organization's hierarchy</p>
+                <button nz-button nzType="primary" (click)="openCreateDrawer()">
+                  Create Position
+                </button>
+              </div>
+            }
+          } 
+        </div>
         <nz-drawer
           ngSkipHydration
           [nzVisible]="drawerVisible()"
@@ -78,11 +78,12 @@ export class PositionTree implements OnInit {
 
   treeData$ = this.store.select(PositionState.treeNode);
   allPosition = signal<Position[]>([]);
-  selectedPosition = model<Position | null>(null);
+  selectedPosition = signal<Position | null>(null);
+
   drawerVisible = model(false);
-  isNew = model(false);
-  drawerTitle = computed(() =>
-  this.isNew() ? 'Create Position' : `Edit: ${this.selectedPosition()?.name || 'Position'}`
+  isNew = signal(false);
+
+  drawerTitle = computed(() => this.isNew() ? 'Create Position' : `Edit: ${this.selectedPosition()?.name || 'Position'}`
 );
 
   ngOnInit() {
@@ -93,18 +94,18 @@ export class PositionTree implements OnInit {
   }
 
   onNodeClick(event: any) {
-  const node = event.node;
-  if (!node) return;
+    const node = event.node;
+    if (!node) return;
 
-  const found = this.allPosition().find(p => p.id === node.key);
-  if (found) {
-    queueMicrotask(() => {
-      this.isNew.set(false);
-      this.selectedPosition.set(found);
-      this.drawerVisible.set(true);
-    });
+    const found = this.allPosition().find(p => p.id === node.key);
+    if (found) {
+      queueMicrotask(() => {
+        this.isNew.set(false);
+        this.selectedPosition.set(found);
+        this.drawerVisible.set(true);
+      });
+    }
   }
-}
 
   openCreateDrawer() {
     this.isNew.set(true);

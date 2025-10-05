@@ -46,6 +46,7 @@ import { CreatePosition, DeletePosition, UpdatePosition } from "../../store/posi
   `
 })
 export class PositionForm {
+
   position = model<Position | null>();
   allPosition = model<Position[]>([]);
   isNew = model(false);
