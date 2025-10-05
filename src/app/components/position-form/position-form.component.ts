@@ -128,6 +128,4 @@ export class PositionForm {
     this.notify()?.('delete');
     this.drawerVisible.set(false);
   }
-
-  
 }

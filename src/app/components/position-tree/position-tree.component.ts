@@ -9,7 +9,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { CommonModule } from "@angular/common";
 import { Position } from "../../models/position.model";
 import { PositionForm } from "../position-form/position-form.component";
-import { NzMessageService } from "ng-zorro-antd/message";
+import { NzNotificationService } from "ng-zorro-antd/notification";
 
 @Component({
   selector: 'app-position-tree',
@@ -27,7 +27,6 @@ import { NzMessageService } from "ng-zorro-antd/message";
            <button nz-button nzType="primary" (click)="openCreateDrawer()" ngSkipHydration>
               Create Position
             </button>
-
           </div>
         </div>
 
@@ -49,11 +48,7 @@ import { NzMessageService } from "ng-zorro-antd/message";
         </button>
       </div>
     }
-  } @else {
-    <div class="text-center mt-32">
-      <span class="text-gray-500">Loading...</span>
-    </div>
-  }
+  } 
 </div>
         <nz-drawer
           ngSkipHydration
@@ -79,7 +74,7 @@ import { NzMessageService } from "ng-zorro-antd/message";
 })
 export class PositionTree implements OnInit {
   private store = inject(Store);
-  private message = inject(NzMessageService);
+  private notification = inject(NzNotificationService);
 
   treeData$ = this.store.select(PositionState.treeNode);
   allPosition = signal<Position[]>([]);
@@ -111,7 +106,6 @@ export class PositionTree implements OnInit {
   }
 }
 
-
   openCreateDrawer() {
     this.isNew.set(true);
     this.selectedPosition.set(null);
@@ -129,6 +123,20 @@ export class PositionTree implements OnInit {
       update: 'Position updated successfully!',
       delete: 'Position deleted successfully!',
     };
-    this.message.success(msgMap[type]);
+    
+    const titleMap = {
+      create: 'Success',
+      update: 'Success', 
+      delete: 'Success'
+    };
+
+    this.notification.success(
+      titleMap[type],
+      msgMap[type],
+      {
+        nzPlacement: 'bottomRight',
+        nzDuration: 3000
+      }
+    );
   };
 }
