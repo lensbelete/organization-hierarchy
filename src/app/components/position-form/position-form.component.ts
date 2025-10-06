@@ -8,6 +8,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { Position } from "../../models/position.model";
 import { CreatePosition, DeletePosition, UpdatePosition } from "../../store/position.action";
+import { NzNotificationService } from "ng-zorro-antd/notification";
 
 @Component({
   selector: 'app-position-form',
@@ -50,8 +51,8 @@ export class PositionForm {
   position = model<Position | null>();
   allPosition = model<Position[]>([]);
   isNew = model(false);
-  notify = model<(type: 'create' | 'update' | 'delete') => void>();
   drawerVisible = model<boolean>(false);
+  private notification = inject(NzNotificationService);
   
 
 
@@ -104,7 +105,7 @@ export class PositionForm {
         parentId: value.parentId ?? null,
         };
       this.store.dispatch(new CreatePosition(payload));
-      this.notify()?.('create');
+      this.notify('create');
     } else {
         const currentPosition = this.position();
         if(!currentPosition?.id){
@@ -117,7 +118,7 @@ export class PositionForm {
             parentId: value.parentId
         }
         this.store.dispatch(new UpdatePosition(payload))
-        this.notify()?.('update');
+        this.notify('update');
     }
     this.drawerVisible.set(false);
   }
@@ -126,7 +127,24 @@ export class PositionForm {
     const pos = this.position();
     if (!pos) return;
     this.store.dispatch(new DeletePosition(pos.id));
-    this.notify()?.('delete');
+    this.notify('delete');
     this.drawerVisible.set(false);
   }
+
+  notify = (type: 'create' | 'update' | 'delete') => {
+    const msgMap = {
+      create: 'Position created successfully!',
+      update: 'Position updated successfully!',
+      delete: 'Position deleted successfully!',
+    };
+    
+    this.notification.success(
+      'Success',
+      msgMap[type],
+      {
+        nzPlacement: 'bottomRight',
+        nzDuration: 3000
+      }
+    );
+  };
 }

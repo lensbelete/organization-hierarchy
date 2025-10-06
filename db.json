@@ -64,25 +64,7 @@
       "id": "7fac",
       "name": "CFO",
       "description": "chief finance officer",
-      "parentId": "d730"
-    },
-    {
-      "id": "99d7",
-      "name": "new position",
-      "description": "description ",
-      "parentId": "b297"
-    },
-    {
-      "id": "6c94",
-      "name": "test position",
-      "description": "description",
-      "parentId": "99d7"
-    },
-    {
-      "id": "2132",
-      "name": "test 2",
-      "description": "desc",
-      "parentId": "6c94"
+      "parentId": "fcc7"
     }
   ]
 }

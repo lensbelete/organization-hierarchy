@@ -24,8 +24,11 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
               <h1 class="text-2xl font-bold text-gray-800">Employee Hierarchy</h1>
               <p class="text-gray-600 mt-1">Manage your organization's position structure</p>
             </div>
-            <button nz-button nzType="primary" (click)="openCreateDrawer()" ngSkipHydration>
-              Create Position
+            <button nz-button nzType="primary" (click)="openCreateDrawer()">
+              <nz-icon nzType="plus"/>
+              <span>
+                 Create Position
+              </span>
             </button>
           </div>
         </div>
@@ -34,7 +37,6 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
           @if (treeData$ | async; as treeData) {
             @if (treeData && treeData.length > 0) {
               <nz-tree
-              ngSkipHydration
                 nzBlockNode
                 [nzData]="treeData"
                 (nzClick)="onNodeClick($event)">
@@ -44,26 +46,28 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
                 <h3 class="text-xl font-semibold text-gray-500 mb-2">No positions yet</h3>
                 <p class="text-gray-500 mb-6">Start building your organization's hierarchy</p>
                 <button nz-button nzType="primary" (click)="openCreateDrawer()">
-                  Create Position
+                     <nz-icon nzType="plus"/>
+                      <span>
+                        Create Position
+                      </span>
                 </button>
               </div>
             }
           } 
         </div>
         <nz-drawer
-          ngSkipHydration
           [nzVisible]="drawerVisible()"
           nzPlacement="right"
           [nzTitle]="drawerTitle()"
           (nzOnClose)="closeDrawer()"
           [nzWidth]="500"
-          nzClosable>
+          nzClosable
+          >
           <div *nzDrawerContent class="h-full">
             <app-position-form
               [position]="selectedPosition()"
               [allPosition]="allPosition()"
               [isNew]="isNew()"
-              [notify]="notify"
               [(drawerVisible)]="drawerVisible">
             </app-position-form>
           </div>
@@ -74,7 +78,7 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
 })
 export class PositionTree implements OnInit {
   private store = inject(Store);
-  private notification = inject(NzNotificationService);
+
 
   treeData$ = this.store.select(PositionState.treeNode);
   allPosition = signal<Position[]>([]);
@@ -99,11 +103,9 @@ export class PositionTree implements OnInit {
 
     const found = this.allPosition().find(p => p.id === node.key);
     if (found) {
-      queueMicrotask(() => {
         this.isNew.set(false);
         this.selectedPosition.set(found);
         this.drawerVisible.set(true);
-      });
     }
   }
 
@@ -118,26 +120,4 @@ export class PositionTree implements OnInit {
     this.selectedPosition.set(null);
   }
 
-  notify = (type: 'create' | 'update' | 'delete') => {
-    const msgMap = {
-      create: 'Position created successfully!',
-      update: 'Position updated successfully!',
-      delete: 'Position deleted successfully!',
-    };
-    
-    const titleMap = {
-      create: 'Success',
-      update: 'Success', 
-      delete: 'Success'
-    };
-
-    this.notification.success(
-      titleMap[type],
-      msgMap[type],
-      {
-        nzPlacement: 'bottomRight',
-        nzDuration: 3000
-      }
-    );
-  };
 }
